@@ -64,6 +64,17 @@
 namespace rclcpp
 {
 
+/// Used as argument in create_publisher and create_subscriber.
+enum class IntraprocessSetting
+{
+  /// Explicitly enable intraprocess comm at publisher/subscription level.
+  ENABLE,
+  /// Explicitly disable intraprocess comm at publisher/subscription level.
+  DISABLE,
+  /// Take intraprocess configuration from the node.
+  DEFAULT_FROM_NODE
+};
+
 /// Node is the single point of entry for creating publishers and subscribers.
 class Node : public std::enable_shared_from_this<Node>
 {
@@ -144,7 +155,8 @@ public:
   std::shared_ptr<PublisherT>
   create_publisher(
     const std::string & topic_name, size_t qos_history_depth,
-    std::shared_ptr<Alloc> allocator = nullptr);
+    std::shared_ptr<Alloc> allocator = nullptr,
+    IntraprocessSetting use_intra_process_comm = IntraprocessSetting::DEFAULT_FROM_NODE);
 
   /// Create and return a Publisher.
   /**
@@ -160,7 +172,8 @@ public:
   create_publisher(
     const std::string & topic_name,
     const rmw_qos_profile_t & qos_profile = rmw_qos_profile_default,
-    std::shared_ptr<Alloc> allocator = nullptr);
+    std::shared_ptr<Alloc> allocator = nullptr,
+    IntraprocessSetting use_intra_process_comm = IntraprocessSetting::DEFAULT_FROM_NODE);
 
   /// Create and return a Subscription.
   /**
@@ -193,7 +206,8 @@ public:
     typename rclcpp::message_memory_strategy::MessageMemoryStrategy<
       typename rclcpp::subscription_traits::has_message_type<CallbackT>::type, Alloc>::SharedPtr
     msg_mem_strat = nullptr,
-    std::shared_ptr<Alloc> allocator = nullptr);
+    std::shared_ptr<Alloc> allocator = nullptr,
+    IntraprocessSetting use_intra_process_comm = IntraprocessSetting::DEFAULT_FROM_NODE);
 
   /// Create and return a Subscription.
   /**
@@ -226,7 +240,8 @@ public:
     typename rclcpp::message_memory_strategy::MessageMemoryStrategy<
       typename rclcpp::subscription_traits::has_message_type<CallbackT>::type, Alloc>::SharedPtr
     msg_mem_strat = nullptr,
-    std::shared_ptr<Alloc> allocator = nullptr);
+    std::shared_ptr<Alloc> allocator = nullptr,
+    IntraprocessSetting use_intra_process_comm = IntraprocessSetting::DEFAULT_FROM_NODE);
 
   /// Create a timer.
   /**
