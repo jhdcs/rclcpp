@@ -17,11 +17,7 @@
 using rclcpp::AnyExecutable;
 
 AnyExecutable::AnyExecutable()
-: subscription(nullptr),
-  timer(nullptr),
-  service(nullptr),
-  client(nullptr),
-  callback_group(nullptr),
+: callback_group(nullptr),
   node_base(nullptr)
 {}
 
